@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Battleship</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+                crossorigin="anonymous">
+        <link rel="stylesheet" href="./style.css">
+        <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Luckiest+Guy|Nanum+Pen+Script|Permanent+Marker|Press+Start+2P|Saira+Stencil+One|Sigmar+One&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" type= "image/png" href="./images/Unknown.jpeg">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+</head>
+
+<body>
+
+        <div class="container-fluid mt-1">
+                <div class="row">
+                        <div class="col-md-3">
+                                <span>
+                                        <button id="new-game" type="button" class="btn btn-primary d-inline">Generate
+                                                Game Code</button>
+                                        <div id="display"></div>
+                                </span>
+                        </div>
+                        <div class="col-md-6">
+                                <span>
+                                        <input id="player-name" type="text" name="name" placeholder="player name">
+                                        <input id="room-code" type="text" name="name" placeholder="code">
+                                        <button id="join" type="button" class="btn btn-primary">Join</button>
+                                </span>
+                        </div>
+                        <div class="col-md-3">
+                                <div id="game-state">
+                                        Join Room
+                                </div>
+                        </div>
+
+                </div>
+
+                <div class="row mt-5">
+                        <div class="col-md-3 offset-md-1">
+                                <div id="oppBoard">Opp Board</div>
+                                <div class="table">
+                                        <div class="row">
+                                                <div class="cell grid-space" id="a1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="a5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="a6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="a9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="a10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="b1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="b5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="b6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="b9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="b10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="c1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="c5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="c6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="c9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="c10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="d1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="d5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="d6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="d9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="d10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="e1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="e5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="e6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="e9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="e10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="f1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="f5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="f6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="f9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="f10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="g1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="g5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="g6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="g9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="g10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="h1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="h5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="h6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="h9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="h10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="i1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="i5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="i6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="i9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="i10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell grid-space" id="j1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="j5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="j6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell grid-space" id="j9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell grid-space" id="j10" data-hit="false"
+                                                        data-ship="false"></div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="col-md-3">
+                                <div id="myBoard">My Board</div>
+                                <div class="table">
+                                        <div class="row">
+                                                <div class="cell my-grid" id="ma1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="ma5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="ma6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="ma9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="ma10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mb1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mb5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mb6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mb9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mb10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mc1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mc5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mc6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mc9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mc10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="md1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="md5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="md6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="md9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="md10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="me1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="me5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="me6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="me9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="me10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mf1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mf5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mf6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mf9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mf10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mg1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mg5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mg6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mg9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mg10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mh1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mh5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mh6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mh9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mh10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mi1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mi5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mi6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mi9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mi10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="cell my-grid" id="mj1" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj2" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj3" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj4" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mj5" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mj6" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj7" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj8" data-hit="false" data-ship="true">
+                                                </div>
+                                                <div class="cell my-grid" id="mj9" data-hit="false" data-ship="false">
+                                                </div>
+                                                <div class="cell my-grid" id="mj10" data-hit="false" data-ship="false">
+                                                </div>
+                                        </div>
+                                </div>
+                                <button id="random-ships" type="button" class="btn btn-secondary">Random Ships</button>
+                                <button id="set-ships" type="button" class="btn btn-secondary">Set Ships</button>
+                        </div>
+
+                        <div class="col-md-3 mr-2 pr-2">
+                                <div id="chatBox">Chat Box</div>
+                                <div id="scroll-box"></div>
+                                <div style="display: inline;">
+                                <input id="message" style="width: 165px;" type="text" placeholder="Send Message" name="name">
+                                <button id="test" type="button" class="btn btn-primary">message</button>
+                        </div>
+                        </div>
+                </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js"></script>
+        <script src="./front.js"></script>
+</body>
+
+</html>
