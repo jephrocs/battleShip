@@ -148,7 +148,7 @@ io.on('connection', function (socket) {
     }
 
     // Game turn handler.  Checks if it's currently this clients turn.  Passes cordinate and player name to checkHit function.
-    // Takes turn or false return value and sends it to all clients inside of room with {cordinate, T/F, clientID}
+    // Takes turn o false return value and sends it to all clients inside of room with {cordinate, T/F, clientID}
     // Boths clients will use this data to determine how to affect the css.
     socket.on('turn', function ({ space, room, name }) {
         const playerObj = players.find(function (element) {
