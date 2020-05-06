@@ -1,4 +1,3 @@
-// Dependencies.
 const express = require('express')
 const socket = require('socket.io')
 const chalk = require('chalk')
@@ -6,7 +5,7 @@ const app = express()
 const uuidv4 = require('uuid/v4')
 const PORT = process.env.PORT || 3000
 
-// Integer tracks number of players that have join a room.
+// number of players om a room
 let numberOfPlayers = 0
 const shipPresets = [
     ['b9', 'c9', 'd9', 'e9', 'f9', 'd3', 'd4', 'd5', 'd6', 'g5', 'h5', 'i5', 'f2', 'g2', 'h2', 'j2', 'j3'],
