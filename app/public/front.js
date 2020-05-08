@@ -22,8 +22,8 @@ const checkState = (roomId) => {
     socket.emit('gameState', roomId)
 }
 
-// Random ship generator.  Sets background color of all clients playing board to blue, makes an axios request to server which returns an 
-// array of ship cordinates.  Loops through each cordinate and changes the correlating grid space to gray to visually represent ship locations.
+// Random ship generator. Sets background color of all clients playing board to blue, makes an axios request to server which returns an 
+// array of ship cordinates. Loops through each cordinate and changes the correlating grid space to gray to visually represent ship locations.
 randomShips.addEventListener('click', function () {
     myGrid.forEach(function (element) {
         element.style.backgroundColor = '#0198E1'
