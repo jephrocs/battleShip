@@ -3,7 +3,7 @@ const socket = io.connect('https://gentle-coast-61798.herokuapp.com/')
 const newGameButton = document.getElementById('new-game')
 const joinButton = document.getElementById('join')
 
-// Pulling the value of this HTML element upon initiation of client could be causing unexpected behavior...... dfa
+// Pulling the value of this HTML element upon initiation of client could be causing unexpected behavior
 // Strange messages are leaking to default room yet game moves are not
 
 let roomId = document.getElementById('room-code')
