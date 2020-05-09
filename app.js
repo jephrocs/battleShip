@@ -32,7 +32,7 @@ const shipPresets = [
     ["a2", "a3", "e3", "e4", "e5", "e9", "f9", "g9", "i2", "i3", "i4", "i5", "c7", "d7", "e7", "f7", "g7"]
 ]
 
-// Serve public folder.
+// Serve public folder .
 app.use(express.static("./app/public"))
 
 // Parse application body as JSON.
