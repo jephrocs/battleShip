@@ -38,7 +38,7 @@ randomShips.addEventListener('click', function () {
 })
 
 // Set ship handler fires when user settles on desired ship configuration.  Client makes an axios POST to server with an array of ship cordinates
-// and their name so the server can set the values to the correct player object.
+// and their name so the server can set the values to the correct player object
 setShips.addEventListener('click', function () {
     axios.post('/setShips', {
         myShipLoc,
